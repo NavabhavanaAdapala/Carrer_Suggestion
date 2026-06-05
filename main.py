@@ -43,5 +43,31 @@ user_vector = vectorizer.transform([user_skill.lower()])
 # 7. Predict
 prediction = model.predict(user_vector)
 
+predicted_career = prediction[0]
+
 print("\nRecommended Main Career Category:")
-print(prediction[0])
+print(predicted_career)
+
+# Get careers belonging to predicted category
+matching_careers = df[
+    df["Career"].apply(
+        lambda x: get_main_category(x) == predicted_career
+    )
+]["Career"].unique()
+
+# Best role
+best_role = matching_careers[0]
+
+print("\nBest Role:")
+print(best_role)
+
+suggested_roles = []
+
+for role in matching_careers:
+    if role != best_role:
+        suggested_roles.append(role)
+
+print("\nSuggested Roles:")
+
+for role in suggested_roles[:4]:
+    print(role)
